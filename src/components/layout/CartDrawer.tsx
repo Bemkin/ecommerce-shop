@@ -19,10 +19,18 @@ import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function CartDrawer() {
     const dispatch = useAppDispatch();
     const { items, isOpen } = useAppSelector((state) => state.cart);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
 
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
