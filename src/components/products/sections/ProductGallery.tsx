@@ -3,8 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronUp, ChevronDown, Maximize2 } from "lucide-react";
+import { ChevronUp, ChevronDown, Maximize2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+import {
+    Dialog,
+    DialogContent,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface ProductGalleryProps {
     images: string[];
@@ -34,55 +40,115 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
             </div>
 
             {/* Main Image View */}
-            <div className="relative flex-1 aspect-square rounded-[32px] bg-muted/20 border border-border/50 overflow-hidden group">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={selectedImage}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 1.05 }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className="relative w-full h-full"
-                    >
-                        <Image
-                            src={images[selectedImage]}
-                            alt={title}
-                            fill
-                            className="object-contain p-8"
-                            priority
-                        />
-                    </motion.div>
-                </AnimatePresence>
+            <Dialog>
+                <div className="relative flex-1 aspect-square rounded-[32px] bg-muted/20 border border-border/50 overflow-hidden group">
+                    <DialogTrigger asChild>
+                        <button className="w-full h-full cursor-zoom-in relative">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={selectedImage}
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 1.05 }}
+                                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                                    className="relative w-full h-full text-center flex items-center justify-center p-8"
+                                >
+                                    <Image
+                                        src={images[selectedImage]}
+                                        alt={title}
+                                        fill
+                                        className="object-contain p-8"
+                                        priority
+                                    />
+                                </motion.div>
+                            </AnimatePresence>
 
-                {/* Floating Controls */}
-                <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button variant="outline" size="icon" className="h-10 w-10 rounded-full bg-background/80 backdrop-blur-md">
-                        <Maximize2 className="h-4 w-4" />
-                    </Button>
+                            {/* Floating Controls */}
+                            <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <Button variant="outline" size="icon" className="h-10 w-10 rounded-full bg-background/80 backdrop-blur-md pointer-events-none">
+                                    <Maximize2 className="h-4 w-4" />
+                                </Button>
+                            </div>
+                        </button>
+                    </DialogTrigger>
+
+                    {/* Navigation Arrows for Main View */}
+                    {images.length > 1 && (
+                        <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-10">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-12 w-12 rounded-full bg-background/40 backdrop-blur-sm pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); prevImage(); }}
+                            >
+                                <ChevronLeft className="h-6 w-6" />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-12 w-12 rounded-full bg-background/40 backdrop-blur-sm pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }}
+                            >
+                                <ChevronRight className="h-6 w-6" />
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
-                {/* Navigation Arrows (Optional for UX) */}
-                {images.length > 1 && (
-                    <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-12 w-12 rounded-full bg-background/40 backdrop-blur-sm pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                        >
-                            <ChevronUp className="-rotate-90 h-6 w-6" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-12 w-12 rounded-full bg-background/40 backdrop-blur-sm pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                        >
-                            <ChevronDown className="-rotate-90 h-6 w-6" />
-                        </Button>
+                <DialogContent className="max-w-[95vw] h-[90vh] p-0 border-none bg-transparent shadow-none flex flex-col items-center justify-center gap-4 outline-none sm:rounded-[40px]">
+                    <div className="relative w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-3xl rounded-[40px] overflow-hidden group/lightbox">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={`lightbox-${selectedImage}`}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.3 }}
+                                className="relative w-full h-full flex items-center justify-center"
+                            >
+                                <Image
+                                    src={images[selectedImage]}
+                                    alt={title}
+                                    fill
+                                    className="object-contain p-4 lg:p-12 select-none"
+                                />
+                            </motion.div>
+                        </AnimatePresence>
+
+                        {/* Lightbox Navigation */}
+                        {images.length > 1 && (
+                            <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-50">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-16 w-16 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md pointer-events-auto transition-all active:scale-90"
+                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); prevImage(); }}
+                                >
+                                    <ChevronLeft className="h-10 w-10" />
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-16 w-16 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md pointer-events-auto transition-all active:scale-90"
+                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }}
+                                >
+                                    <ChevronRight className="h-10 w-10" />
+                                </Button>
+                            </div>
+                        )}
+
+                        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-2 bg-black/40 backdrop-blur-md rounded-full text-white text-xs font-black tracking-widest uppercase flex gap-4 z-50">
+                            {images.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setSelectedImage(i)}
+                                    className={`h-1.5 w-1.5 rounded-full transition-all ${i === selectedImage ? "bg-white w-6" : "bg-white/30"}`}
+                                />
+                            ))}
+                        </div>
                     </div>
-                )}
-            </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
