@@ -69,6 +69,12 @@ const ProductCard = React.memo(function ProductCard({
                     onClick={(e) => {
                         e.preventDefault();
                         dispatch(toggleFavorite(product.id));
+                        const isNowFavorited = !isFavorited;
+                        dispatch(addNotification({
+                            title: isNowFavorited ? "Added to Favorites" : "Removed from Favorites",
+                            message: isNowFavorited ? `${product.title} is now in your wishlist.` : `${product.title} has been removed from your wishlist.`,
+                            type: "info"
+                        }));
                     }}
                     aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
                 >
