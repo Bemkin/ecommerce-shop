@@ -72,7 +72,5 @@ The project follows a **Layered Feature-Based Architecture**, ensuring that logi
 - **Persistence**: Favorites and Auth state are persisted across sessions (`localStorage` / `sessionStorage`).
 - **Performance**: Categories are fetched once at the root level and shared via Redux to prevent "waterfall" API calls.
 - **Type Safety**: 100% TypeScript coverage with custom interfaces for API responses.
-
 ---
-
-
+*Verified Spec-Compliant eCommerce Prototype*
