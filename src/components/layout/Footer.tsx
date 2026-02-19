@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Heart, Facebook, Instagram, Twitter, Youtube, Send, ShieldCheck, Truck, Headphones, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Logo } from "./index";
+import Logo from "./Logo";
 import { useAppSelector } from "@/store/hooks";
 
 export default function Footer() {
