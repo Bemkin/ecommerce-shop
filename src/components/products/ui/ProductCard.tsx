@@ -107,7 +107,6 @@ const ProductCard = React.memo(function ProductCard({
                             <Badge variant="destructive" className="h-5 px-2 text-[9px] font-black rounded-lg border-none shadow-none bg-destructive italic uppercase tracking-tighter">
                                 -{Math.round(product.discountPercentage)}%
                             </Badge>
-                            )}
 
                             <Button
                                 variant="ghost"
