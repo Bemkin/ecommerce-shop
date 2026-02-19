@@ -2,7 +2,7 @@
 
 import { User } from "lucide-react";
 import { SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { SearchBar } from "@/components/products";
+import SearchBar from "@/components/products/ui/SearchBar";
 import NavLinks from "./NavLinks";
 import { Category } from "@/lib/types";
 

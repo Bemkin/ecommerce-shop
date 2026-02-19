@@ -41,6 +41,11 @@ export default function HomePageContent() {
     // Filter state
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
     const [sortValue, setSortValue] = useState("default");
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Access global categories state
     const categories = useAppSelector((state) => state.categories.items);
@@ -111,7 +116,7 @@ export default function HomePageContent() {
         [products]
     );
 
-    if (!isAuthenticated) return null;
+    if (!mounted || !isAuthenticated) return null;
 
     return (
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 space-y-24">

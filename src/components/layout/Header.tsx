@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { toggleDarkMode } from "@/store/slices/themeSlice";
 import { logout } from "@/store/slices/authSlice";
-import { SearchBar } from "@/components/products";
+import SearchBar from "@/components/products/ui/SearchBar";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
@@ -22,6 +22,11 @@ export default function Header() {
     const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Access global categories state
     const categories = useAppSelector((state) => state.categories.items);
@@ -40,7 +45,7 @@ export default function Header() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    if (!isAuthenticated) return null;
+    if (!mounted || !isAuthenticated) return null;
 
     return (
         <header className={`sticky top-0 z-50 w-full border-b-2 py-1 transition-all duration-200 ${scrolled
