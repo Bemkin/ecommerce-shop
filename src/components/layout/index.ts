@@ -6,3 +6,4 @@ export { default as CategoryDropdown } from "./CategoryDropdown";
 export { default as MobileNav } from "./MobileNav";
 export { default as NavLinks } from "./NavLinks";
 export { default as UserActions } from "./UserActions";
+export { default as NotificationDropdown } from "./NotificationDropdown";

@@ -10,7 +10,10 @@ import SearchBar from "@/components/products/ui/SearchBar";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
-import { Logo, CategoryDropdown, MobileNav, UserActions } from "./index";
+import Logo from "./Logo";
+import CategoryDropdown from "./CategoryDropdown";
+import MobileNav from "./MobileNav";
+import UserActions from "./UserActions";
 
 import { setSearchQuery } from "@/store/slices/searchSlice";
 
