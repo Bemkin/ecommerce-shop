@@ -18,6 +18,7 @@ import { Heart, Moon, Sun, LogOut, User, Bell, ShoppingBag } from "lucide-react"
 import { toggleCart } from "@/store/slices/cartSlice";
 import { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import NotificationDropdown from "./NotificationDropdown";
 
 export default function UserActions() {
     const dispatch = useAppDispatch();
@@ -71,9 +72,8 @@ export default function UserActions() {
                     )}
                 </AnimatePresence>
             </Button>
-            <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground hidden sm:flex">
-                <Bell className="h-[22px] w-[22px]" />
-            </Button>
+
+            <NotificationDropdown />
 
             <div className="h-6 w-px bg-border/60 mx-1 hidden sm:block" />
 

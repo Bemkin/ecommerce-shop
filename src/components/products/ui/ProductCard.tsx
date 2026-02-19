@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleFavorite } from "@/store/slices/favoritesSlice";
 import { addToCart } from "@/store/slices/cartSlice";
+import { addNotification } from "@/store/slices/notificationSlice";
 import { toast } from "sonner";
 import { StarRating } from "@/components/shared";
 import { Product } from "@/lib/types";
@@ -115,6 +116,11 @@ const ProductCard = React.memo(function ProductCard({
                                 onClick={(e) => {
                                     e.preventDefault();
                                     dispatch(addToCart({ ...product, quantity: 1 }));
+                                    dispatch(addNotification({
+                                        title: "Added to Bag",
+                                        message: `${product.title} added to your shopping bag.`,
+                                        type: "success"
+                                    }));
                                     toast.success(`Added ${product.title} to bag`);
                                 }}
                             >

@@ -5,6 +5,7 @@ import authReducer from "./slices/authSlice";
 import categoriesReducer from "./slices/categoriesSlice";
 import searchReducer from "./slices/searchSlice";
 import cartReducer from "./slices/cartSlice";
+import notificationReducer from "./slices/notificationSlice";
 
 let persistenceTimeout: NodeJS.Timeout;
 
@@ -18,7 +19,8 @@ const persistenceMiddleware: Middleware = (store) => (next) => (action) => {
         previousState.favorites !== currentState.favorites ||
         previousState.theme !== currentState.theme ||
         previousState.auth !== currentState.auth ||
-        previousState.cart !== currentState.cart
+        previousState.cart !== currentState.cart ||
+        previousState.notifications !== currentState.notifications
     ) {
         if (typeof window !== "undefined") {
             // Debounce writes to avoid blocking the main thread during rapid actions
@@ -30,6 +32,7 @@ const persistenceMiddleware: Middleware = (store) => (next) => (action) => {
                     // Auth uses sessionStorage: persists on refresh but clears when browser is closed
                     sessionStorage.setItem("auth", JSON.stringify(currentState.auth));
                     localStorage.setItem("shophub_cart", JSON.stringify(currentState.cart.items));
+                    localStorage.setItem("notifications", JSON.stringify(currentState.notifications.notifications));
                 } catch (e) {
                     console.error("Failed to persist state:", e);
                 }
@@ -48,6 +51,7 @@ export const store = configureStore({
         categories: categoriesReducer,
         search: searchReducer,
         cart: cartReducer,
+        notifications: notificationReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(persistenceMiddleware),
