@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
+    DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -96,6 +98,10 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                 </div>
 
                 <DialogContent className="max-w-[95vw] h-[90vh] p-0 border-none bg-transparent shadow-none flex flex-col items-center justify-center gap-4 outline-none sm:rounded-[40px]">
+                    <DialogTitle className="sr-only">Product Image Gallery - {title}</DialogTitle>
+                    <DialogDescription className="sr-only">
+                        Full screen view of {title}. Use left and right arrows to navigate.
+                    </DialogDescription>
                     <div className="relative w-full h-full flex items-center justify-center bg-black/50 backdrop-blur-3xl rounded-[40px] overflow-hidden group/lightbox">
                         <AnimatePresence mode="wait">
                             <motion.div
