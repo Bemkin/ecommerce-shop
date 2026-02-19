@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useAppDispatch } from "@/store/hooks";
 import { toggleFavorite } from "@/store/slices/favoritesSlice";
+import { addToCart } from "@/store/slices/cartSlice";
+import { toast } from "sonner";
 
 interface ProductSummaryProps {
     product: Product;
@@ -49,6 +51,17 @@ export default function ProductSummary({ product, isFavorited }: ProductSummaryP
     }
 
     const discountedPrice = product.price * (1 - product.discountPercentage / 100);
+
+    const handleAddToCart = () => {
+        dispatch(addToCart({
+            ...product,
+            quantity: 1,
+            selectedVariant: selectedOption || undefined
+        }));
+        toast.success(`Added ${product.title} to bag`, {
+            description: selectedOption ? `Variant: ${selectedOption}` : undefined
+        });
+    };
 
     return (
         <div className="space-y-8">
@@ -113,12 +126,19 @@ export default function ProductSummary({ product, isFavorited }: ProductSummaryP
             {/* Actions */}
             <div className="space-y-4 pt-4">
                 <div className="flex gap-3">
-                    <Button className="flex-1 h-14 rounded-2xl bg-foreground text-background hover:bg-foreground/90 font-black text-lg shadow-xl shadow-foreground/10 transition-transform active:scale-95">
+                    <Button
+                        onClick={handleAddToCart}
+                        className="flex-1 h-14 rounded-2xl bg-foreground text-background hover:bg-foreground/90 font-black text-lg shadow-xl shadow-foreground/10 transition-transform active:scale-95"
+                    >
                         Buy this item
                     </Button>
                 </div>
                 <div className="flex gap-3">
-                    <Button variant="outline" className="flex-1 h-14 rounded-2xl border-2 font-black text-lg hover:bg-primary/5 hover:border-primary/50 transition-all">
+                    <Button
+                        variant="outline"
+                        onClick={handleAddToCart}
+                        className="flex-1 h-14 rounded-2xl border-2 font-black text-lg hover:bg-primary/5 hover:border-primary/50 transition-all"
+                    >
                         Add to Bag
                     </Button>
                 </div>

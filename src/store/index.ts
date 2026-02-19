@@ -4,6 +4,7 @@ import themeReducer from "./slices/themeSlice";
 import authReducer from "./slices/authSlice";
 import categoriesReducer from "./slices/categoriesSlice";
 import searchReducer from "./slices/searchSlice";
+import cartReducer from "./slices/cartSlice";
 
 let persistenceTimeout: NodeJS.Timeout;
 
@@ -16,7 +17,8 @@ const persistenceMiddleware: Middleware = (store) => (next) => (action) => {
     if (
         previousState.favorites !== currentState.favorites ||
         previousState.theme !== currentState.theme ||
-        previousState.auth !== currentState.auth
+        previousState.auth !== currentState.auth ||
+        previousState.cart !== currentState.cart
     ) {
         if (typeof window !== "undefined") {
             // Debounce writes to avoid blocking the main thread during rapid actions
@@ -27,6 +29,7 @@ const persistenceMiddleware: Middleware = (store) => (next) => (action) => {
                     localStorage.setItem("theme", JSON.stringify(currentState.theme));
                     // Auth uses sessionStorage: persists on refresh but clears when browser is closed
                     sessionStorage.setItem("auth", JSON.stringify(currentState.auth));
+                    localStorage.setItem("shophub_cart", JSON.stringify(currentState.cart.items));
                 } catch (e) {
                     console.error("Failed to persist state:", e);
                 }
@@ -44,6 +47,7 @@ export const store = configureStore({
         auth: authReducer,
         categories: categoriesReducer,
         search: searchReducer,
+        cart: cartReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(persistenceMiddleware),

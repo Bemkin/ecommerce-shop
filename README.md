@@ -13,6 +13,7 @@ A high-performance, feature-rich eCommerce application built with **Next.js 16**
 - **[x] Favorites System**: Robust favoriting logic managed via Redux with ID-only persistence for performance.
 - **[x] Full CRUD Support**: Create, Edit (via `PUT`), and Delete products with immediate UI feedback.
 - **[x] Product Details**: Deep-dive views with rich galleries, dynamic variant selectors, and ranked recommendations.
+- **[x] Shopping Bag**: Fully functional side-drawer cart with persistence, quantity controls, and subtotal calculation.
 
 ### "Beyond-the-Spec" Bonuses 💎
 - **Premium UI/UX**: Custom design system featuring glassmorphism, staggered animations (Framer Motion), and modern typography.

@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleFavorite } from "@/store/slices/favoritesSlice";
+import { addToCart } from "@/store/slices/cartSlice";
+import { toast } from "sonner";
 import { StarRating } from "@/components/shared";
 import { Product } from "@/lib/types";
 
@@ -102,11 +104,27 @@ const ProductCard = React.memo(function ProductCard({
                                 </span>
                             </div>
 
-                            {product.discountPercentage > 0 && (
-                                <Badge variant="destructive" className="h-5 px-2 text-[9px] font-black rounded-lg border-none shadow-none bg-destructive italic uppercase tracking-tighter">
-                                    -{Math.round(product.discountPercentage)}%
-                                </Badge>
+                            <Badge variant="destructive" className="h-5 px-2 text-[9px] font-black rounded-lg border-none shadow-none bg-destructive italic uppercase tracking-tighter">
+                                -{Math.round(product.discountPercentage)}%
+                            </Badge>
                             )}
+
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-9 w-9 rounded-xl hover:bg-primary/10 hover:text-primary transition-all ml-2 border border-border group/cart"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(addToCart({ ...product, quantity: 1 }));
+                                    toast.success(`Added ${product.title} to bag`);
+                                }}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover/cart:scale-110 transition-transform">
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                    <path d="M3 6h18" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" />
+                                </svg>
+                            </Button>
                         </div>
                     </div>
 

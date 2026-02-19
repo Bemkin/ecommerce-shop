@@ -6,6 +6,7 @@ import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { fetchCategories } from "@/store/slices/categoriesSlice";
+import CartDrawer from "@/components/layout/CartDrawer";
 
 function ThemeHandler({ children }: { children: React.ReactNode }) {
   const darkMode = useAppSelector((state) => state.theme.darkMode);
@@ -32,6 +33,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <Provider store={store}>
       <ThemeHandler>
         {children}
+        <CartDrawer />
         <Toaster richColors position="bottom-right" />
       </ThemeHandler>
     </Provider>

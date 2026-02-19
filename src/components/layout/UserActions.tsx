@@ -14,8 +14,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Heart, Moon, Sun, LogOut, User, Bell } from "lucide-react";
+import { Heart, Moon, Sun, LogOut, User, Bell, ShoppingBag } from "lucide-react";
+import { toggleCart } from "@/store/slices/cartSlice";
 import { useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function UserActions() {
     const dispatch = useAppDispatch();
@@ -24,6 +26,9 @@ export default function UserActions() {
     const { user } = useAppSelector((state) => state.auth);
     const favoritesCount = useAppSelector(
         (state) => state.favorites.ids.length
+    );
+    const itemsCount = useAppSelector((state) =>
+        state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
     );
 
     const handleLogout = useCallback(() => {
@@ -45,7 +50,27 @@ export default function UserActions() {
                 </Button>
             </Link>
 
-            {/* Notifications (Mock) */}
+            {/* Cart */}
+            <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => dispatch(toggleCart())}
+                className="relative rounded-full text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors"
+            >
+                <ShoppingBag className="h-[22px] w-[22px]" />
+                <AnimatePresence>
+                    {itemsCount > 0 && (
+                        <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0 }}
+                            className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-primary-foreground text-[9px] font-black border-2 border-background shadow-sm"
+                        >
+                            {itemsCount}
+                        </motion.span>
+                    )}
+                </AnimatePresence>
+            </Button>
             <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground hidden sm:flex">
                 <Bell className="h-[22px] w-[22px]" />
             </Button>
