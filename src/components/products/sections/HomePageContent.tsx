@@ -39,7 +39,7 @@ export default function HomePageContent() {
     const searchQuery = useAppSelector((state: RootState) => state.search.query);
 
     // Filter state
-    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+    const [activeCategory, setActiveCategory] = useState<string | null>(categoryParam);
     const [sortValue, setSortValue] = useState("default");
     const [mounted, setMounted] = useState(false);
 
@@ -116,7 +116,8 @@ export default function HomePageContent() {
         [products]
     );
 
-    if (!mounted || !isAuthenticated) return null;
+    // Note: Render structure even if not mounted/authenticated to prevent height collapse
+    if (mounted && !isAuthenticated) return null;
 
     return (
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 space-y-24">
@@ -140,7 +141,7 @@ export default function HomePageContent() {
                 <div>
                     <h2 className="text-3xl font-black tracking-tight mb-1">Today’s For You!</h2>
                     <p className="text-muted-foreground text-sm font-medium">
-                        {loading ? "Discovering deals..." : activeCategory || searchQuery ? `Showing ${total} premium findings` : "Today's premium picks"}
+                        {!mounted || loading ? "Discovering deals..." : activeCategory || searchQuery ? `Showing ${total} premium findings` : "Today's premium picks"}
                     </p>
                 </div>
 
@@ -155,34 +156,44 @@ export default function HomePageContent() {
                         >
                             All
                         </Button>
-                        {categories.slice(0, 4).map((cat) => (
-                            <Button
-                                key={cat.slug}
-                                variant={activeCategory === cat.slug ? "secondary" : "ghost"}
-                                size="sm"
-                                className={`h-9 rounded-xl text-xs font-bold px-5 capitalize transition-all ${activeCategory === cat.slug ? "bg-background shadow-sm" : ""}`}
-                                onClick={() => handleCategoryClick(cat.slug)}
-                            >
-                                {cat.name}
-                            </Button>
-                        ))}
+                        {(!mounted || categories.length === 0) ? (
+                            Array.from({ length: 4 }).map((_, i) => (
+                                <div key={`cat-skel-${i}`} className="h-9 w-20 rounded-xl bg-muted/60 animate-pulse" />
+                            ))
+                        ) : (
+                            categories.slice(0, 4).map((cat) => (
+                                <Button
+                                    key={cat.slug}
+                                    variant={activeCategory === cat.slug ? "secondary" : "ghost"}
+                                    size="sm"
+                                    className={`h-9 rounded-xl text-xs font-bold px-5 capitalize transition-all ${activeCategory === cat.slug ? "bg-background shadow-sm" : ""}`}
+                                    onClick={() => handleCategoryClick(cat.slug)}
+                                >
+                                    {cat.name}
+                                </Button>
+                            ))
+                        )}
                     </div>
 
                     <div className="h-8 w-px bg-border/60 mx-1 hidden lg:block" />
 
                     {/* Sort Select */}
-                    <Select value={sortValue} onValueChange={setSortValue}>
-                        <SelectTrigger className="w-[180px] h-11 rounded-2xl border-none bg-muted/40 font-bold text-xs ring-0 focus:ring-2 focus:ring-primary/10">
-                            <SelectValue placeholder="Sort by" />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-2xl border-none shadow-2xl">
-                            {SORT_OPTIONS.map((opt) => (
-                                <SelectItem key={opt.value} value={opt.value} className="rounded-xl mx-1 my-0.5 font-medium text-xs">
-                                    {opt.label}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    {mounted ? (
+                        <Select value={sortValue} onValueChange={setSortValue}>
+                            <SelectTrigger className="w-[180px] h-11 rounded-2xl border-none bg-muted/40 font-bold text-xs ring-0 focus:ring-2 focus:ring-primary/10">
+                                <SelectValue placeholder="Sort by" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-2xl border-none shadow-2xl">
+                                {SORT_OPTIONS.map((opt) => (
+                                    <SelectItem key={opt.value} value={opt.value} className="rounded-xl mx-1 my-0.5 font-medium text-xs">
+                                        {opt.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    ) : (
+                        <div className="w-[180px] h-11 rounded-2xl bg-muted/40 animate-pulse" />
+                    )}
                 </div>
             </div>
 
@@ -240,10 +251,10 @@ export default function HomePageContent() {
             )}
 
             {/* Loading State */}
-            {loading && !error && <ProductGridSkeleton count={PRODUCTS_PER_PAGE} />}
+            {(!mounted || loading) && !error && <ProductGridSkeleton count={PRODUCTS_PER_PAGE} />}
 
             {/* Product Grid */}
-            {!loading && !error && (
+            {mounted && !loading && !error && (
                 <AnimatePresence initial={false} mode="popLayout">
                     {products.length === 0 ? (
                         <motion.div

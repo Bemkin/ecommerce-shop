@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { fetchCategories } from "@/store/slices/categoriesSlice";
 import CartDrawer from "@/components/layout/CartDrawer";
+import QuickViewModal from "@/components/products/modals/QuickViewModal";
 
 function ThemeHandler({ children }: { children: React.ReactNode }) {
   const darkMode = useAppSelector((state) => state.theme.darkMode);
@@ -34,6 +35,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <ThemeHandler>
         {children}
         <CartDrawer />
+        <QuickViewModal />
         <Toaster richColors position="bottom-right" />
       </ThemeHandler>
     </Provider>

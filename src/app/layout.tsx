@@ -5,6 +5,8 @@ import "./globals.css";
 import Providers from "@/components/layout/Providers";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ScrollToTop from "@/components/shared/ScrollToTop";
+import ScrollRestoration from "@/components/shared/ScrollRestoration";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +43,8 @@ export default function RootLayout({
           <Suspense fallback={<div className="h-16 border-b bg-background/95 backdrop-blur py-1 flex items-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" />}>
             <Header />
           </Suspense>
+          <ScrollToTop />
+          <ScrollRestoration />
           <main className="min-h-[calc(100vh-4rem)]">{children}</main>
           <Footer />
         </Providers>

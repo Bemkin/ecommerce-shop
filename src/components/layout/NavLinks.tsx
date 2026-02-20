@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,11 @@ interface NavLinksProps {
 export default function NavLinks({ isMobile, onItemClick, categories = [] }: NavLinksProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     if (isMobile) {
         return (
@@ -19,7 +25,7 @@ export default function NavLinks({ isMobile, onItemClick, categories = [] }: Nav
                 <Link href="/" onClick={onItemClick}>
                     <Button variant="ghost" className="w-full justify-start text-base h-12 rounded-xl border-b border-border/40 mb-2">Home</Button>
                 </Link>
-                {categories.length > 0 ? (
+                {mounted && categories.length > 0 ? (
                     <>
                         <div className="px-4 py-2 text-xs font-black text-muted-foreground uppercase tracking-widest bg-muted/20 mb-1">
                             Shop By Category
@@ -36,7 +42,7 @@ export default function NavLinks({ isMobile, onItemClick, categories = [] }: Nav
                         ))}
                     </>
                 ) : (
-                    <div className="p-4 text-center text-muted-foreground text-sm">Loading categories...</div>
+                    !mounted ? null : <div className="p-4 text-center text-muted-foreground text-sm">Loading categories...</div>
                 )}
             </>
         );

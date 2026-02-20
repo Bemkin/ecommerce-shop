@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { toggleFavorite } from "@/store/slices/favoritesSlice";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
+import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
 import { ProductCard, ProductGrid, ProductGridSkeleton } from "@/components/products";
 import { Product } from "@/lib/types";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
@@ -80,30 +82,26 @@ export default function FavoritesPage() {
             {loading ? (
                 <ProductGridSkeleton count={favoriteIds.length || 4} />
             ) : favoriteIds.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 text-center">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="56"
-                        height="56"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-muted-foreground/40 mb-4"
+                <div className="flex flex-col items-center justify-center py-24 text-center">
+                    <motion.div
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="w-24 h-24 rounded-full bg-muted/30 flex items-center justify-center relative mb-8"
                     >
-                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                    </svg>
-                    <p className="text-xl font-semibold">No favorites yet</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                        Click the heart icon on any product to save it here
-                    </p>
+                        <Heart className="w-10 h-10 text-muted-foreground/30" />
+                        <div className="absolute inset-0 rounded-full border-2 border-dashed border-muted-foreground/20 animate-[spin_12s_linear_infinite]" />
+                    </motion.div>
+                    <div className="space-y-3 mb-10">
+                        <h3 className="text-2xl font-black italic tracking-tight">YOUR WISHLIST IS EMPTY</h3>
+                        <p className="text-sm text-muted-foreground max-w-[280px] mx-auto font-medium leading-relaxed">
+                            Don&apos;t let your favorites get away. Save the items you love and they&apos;ll appear right here.
+                        </p>
+                    </div>
                     <button
                         onClick={() => router.push("/")}
-                        className="mt-6 text-sm text-primary hover:underline font-medium"
+                        className="h-14 px-10 rounded-2xl font-black italic tracking-widest text-[11px] uppercase bg-foreground text-background hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-foreground/10"
                     >
-                        Browse Products →
+                        START DISCOVERING
                     </button>
                 </div>
             ) : (

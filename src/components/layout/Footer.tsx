@@ -7,9 +7,14 @@ import { Input } from "@/components/ui/input";
 import Logo from "./Logo";
 import { useAppSelector } from "@/store/hooks";
 
+import { usePathname } from "next/navigation";
+
 export default function Footer() {
+    const pathname = usePathname();
     const currentYear = new Date().getFullYear();
     const categories = useAppSelector((state) => state.categories.items);
+
+    if (pathname === "/login") return null;
 
     return (
         <footer className="mt-32">

@@ -36,7 +36,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                         className={`relative h-20 w-20 lg:h-24 lg:w-24 shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-300 ${selectedImage === idx ? "border-primary shadow-lg scale-105" : "border-transparent hover:border-border"
                             }`}
                     >
-                        <Image src={img} alt={`${title} thumbnail ${idx}`} fill className="object-cover" />
+                        <Image src={img} alt={`${title} thumbnail ${idx}`} fill className="object-cover" sizes="(max-width: 1024px) 80px, 96px" />
                     </button>
                 ))}
             </div>
@@ -45,7 +45,17 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
             <Dialog>
                 <div className="relative flex-1 aspect-square rounded-[32px] bg-muted/20 border border-border/50 overflow-hidden group">
                     <DialogTrigger asChild>
-                        <button className="w-full h-full cursor-zoom-in relative">
+                        <div
+                            role="button"
+                            tabIndex={0}
+                            className="w-full h-full cursor-zoom-in relative outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-[32px]"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    (e.currentTarget as HTMLElement).click();
+                                }
+                            }}
+                        >
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={selectedImage}
@@ -61,6 +71,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                                         fill
                                         className="object-contain p-8"
                                         priority
+                                        sizes="(max-width: 1024px) 100vw, 50vw"
                                     />
                                 </motion.div>
                             </AnimatePresence>
@@ -71,7 +82,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                                     <Maximize2 className="h-4 w-4" />
                                 </Button>
                             </div>
-                        </button>
+                        </div>
                     </DialogTrigger>
 
                     {/* Navigation Arrows for Main View */}
@@ -117,6 +128,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                                     alt={title}
                                     fill
                                     className="object-contain p-4 lg:p-12 select-none"
+                                    sizes="100vw"
                                 />
                             </motion.div>
                         </AnimatePresence>
@@ -154,7 +166,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                         </div>
                     </div>
                 </DialogContent>
-            </Dialog>
-        </div>
+            </Dialog >
+        </div >
     );
 }

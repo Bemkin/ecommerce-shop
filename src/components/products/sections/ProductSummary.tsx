@@ -11,6 +11,7 @@ import { toggleFavorite } from "@/store/slices/favoritesSlice";
 import { addToCart } from "@/store/slices/cartSlice";
 import { addNotification } from "@/store/slices/notificationSlice";
 import { toast } from "sonner";
+import { useFlyToCart } from "@/hooks/useFlyToCart";
 
 interface ProductSummaryProps {
     product: Product;
@@ -19,6 +20,7 @@ interface ProductSummaryProps {
 
 export default function ProductSummary({ product, isFavorited }: ProductSummaryProps) {
     const dispatch = useAppDispatch();
+    const { flyToCart } = useFlyToCart();
     const [selectedOption, setSelectedOption] = useState<string>("");
 
     // Dynamic Variant Configuration

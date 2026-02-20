@@ -6,6 +6,8 @@ import categoriesReducer from "./slices/categoriesSlice";
 import searchReducer from "./slices/searchSlice";
 import cartReducer from "./slices/cartSlice";
 import notificationReducer from "./slices/notificationSlice";
+import uiReducer from "./slices/uiSlice";
+import checkoutReducer from "./slices/checkoutSlice";
 
 let persistenceTimeout: NodeJS.Timeout;
 
@@ -52,6 +54,8 @@ export const store = configureStore({
         search: searchReducer,
         cart: cartReducer,
         notifications: notificationReducer,
+        ui: uiReducer,
+        checkout: checkoutReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(persistenceMiddleware),

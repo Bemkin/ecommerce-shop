@@ -3,6 +3,8 @@
 A high-performance, feature-rich eCommerce application built with **Next.js 16**, **TypeScript**, and **Redux Toolkit**. Designed with a focus on premium UI/UX, scalability, and clean architecture.
 
 ![ShopHub Banner](https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200&h=400)
+ 
+Live Demo: [https://ecommerce-shop-psi-umber.vercel.app/](https://ecommerce-shop-psi-umber.vercel.app/)
 
 ## 🌟 Key Features
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams as getParams } from "next/navigation";
 import { Product } from "@/lib/types";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
@@ -23,6 +23,12 @@ import Link from "next/link";
 export default function ProductDetailPage() {
     const params = useParams();
     const router = useRouter();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const isAuthenticated = useAuthGuard();
     const productId = Number(params.id);
 
@@ -41,9 +47,10 @@ export default function ProductDetailPage() {
         onProductDeleted: () => router.push("/")
     });
 
-    if (!isAuthenticated) return null;
+    // Note: Render structure even if not mounted/authenticated to prevent height collapse
+    if (mounted && !isAuthenticated) return null;
 
-    if (loading) {
+    if (!mounted || loading) {
         return (
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 space-y-12">
                 <Skeleton className="h-4 w-64 mb-8" />

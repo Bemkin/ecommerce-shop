@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import {
     markAsRead,
@@ -24,6 +25,11 @@ export default function NotificationDropdown() {
     const { notifications } = useAppSelector((state) => state.notifications);
     const unreadCount = notifications.filter((n) => !n.read).length;
 
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const getIcon = (type: string) => {
         switch (type) {
             case "success": return <CheckCircle2 className="h-4 w-4 text-green-500" />;
@@ -42,7 +48,7 @@ export default function NotificationDropdown() {
                 >
                     <Bell className="h-[22px] w-[22px]" />
                     <AnimatePresence>
-                        {unreadCount > 0 && (
+                        {mounted && unreadCount > 0 && (
                             <motion.span
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
@@ -59,7 +65,7 @@ export default function NotificationDropdown() {
                 <div className="p-4 border-b flex items-center justify-between bg-muted/30">
                     <DropdownMenuLabel className="p-0 font-black text-sm tracking-tight">Notifications</DropdownMenuLabel>
                     <div className="flex gap-2">
-                        {unreadCount > 0 && (
+                        {mounted && unreadCount > 0 && (
                             <Button
                                 variant="ghost"
                                 size="sm"
@@ -105,7 +111,7 @@ export default function NotificationDropdown() {
                                             <div className="flex justify-between items-start gap-2">
                                                 <p className="text-xs font-black tracking-tight leading-none">{n.title}</p>
                                                 <span className="text-[9px] font-bold text-muted-foreground uppercase whitespace-nowrap">
-                                                    {formatDistanceToNow(n.timestamp, { addSuffix: true })}
+                                                    {mounted ? formatDistanceToNow(n.timestamp, { addSuffix: true }) : "Just now"}
                                                 </span>
                                             </div>
                                             <p className="text-[11px] leading-relaxed text-muted-foreground font-medium line-clamp-2">

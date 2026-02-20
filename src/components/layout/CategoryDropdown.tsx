@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { useRouter } from "next/navigation";
 import { setSearchQuery } from "@/store/slices/searchSlice";
@@ -22,6 +23,11 @@ interface CategoryDropdownProps {
 export default function CategoryDropdown({ categories }: CategoryDropdownProps) {
     const dispatch = useAppDispatch();
     const router = useRouter();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <DropdownMenu>
@@ -44,7 +50,7 @@ export default function CategoryDropdown({ categories }: CategoryDropdownProps) 
                 >
                     All Products
                 </DropdownMenuItem>
-                {categories.map((cat) => (
+                {mounted && categories.map((cat) => (
                     <DropdownMenuItem
                         key={cat.slug}
                         onClick={() => {

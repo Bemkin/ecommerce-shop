@@ -14,11 +14,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Heart, Moon, Sun, LogOut, User, Bell, ShoppingBag } from "lucide-react";
+import { Heart, Moon, Sun, LogOut, User, Bell, ShoppingBag, PlusCircle } from "lucide-react";
 import { toggleCart } from "@/store/slices/cartSlice";
 import { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import NotificationDropdown from "./NotificationDropdown";
+import { useEffect, useState } from "react";
 
 export default function UserActions() {
     const dispatch = useAppDispatch();
@@ -32,6 +33,11 @@ export default function UserActions() {
         state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
     );
 
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const handleLogout = useCallback(() => {
         dispatch(logout());
         router.push("/login");
@@ -39,11 +45,18 @@ export default function UserActions() {
 
     return (
         <div className="flex items-center gap-1.5 sm:gap-3">
+            {/* Add Product Shortcut */}
+            <Link href="/products/create" className="hidden sm:block">
+                <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors" title="Add Product">
+                    <PlusCircle className="h-[22px] w-[22px]" />
+                </Button>
+            </Link>
+
             {/* Favorites */}
             <Link href="/favorites" className="relative">
                 <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors">
                     <Heart className="h-[22px] w-[22px]" />
-                    {favoritesCount > 0 && (
+                    {mounted && favoritesCount > 0 && (
                         <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-primary-foreground text-[9px] font-black border-2 border-background animate-in zoom-in">
                             {favoritesCount}
                         </span>
@@ -53,6 +66,7 @@ export default function UserActions() {
 
             {/* Cart */}
             <Button
+                id="cart-icon"
                 variant="ghost"
                 size="icon"
                 onClick={() => dispatch(toggleCart())}
@@ -60,7 +74,7 @@ export default function UserActions() {
             >
                 <ShoppingBag className="h-[22px] w-[22px]" />
                 <AnimatePresence>
-                    {itemsCount > 0 && (
+                    {mounted && itemsCount > 0 && (
                         <motion.span
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
@@ -85,7 +99,7 @@ export default function UserActions() {
                 className="rounded-full text-muted-foreground hover:bg-muted/50 hidden md:flex"
                 aria-label="Toggle dark mode"
             >
-                {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                {!mounted ? <div className="h-5 w-5" /> : darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
 
             {/* Profile Dropdown */}
@@ -96,7 +110,7 @@ export default function UserActions() {
                             <User className="h-4 w-4 text-muted-foreground" />
                         </div>
                         <span className="text-sm font-semibold hidden lg:inline-block pr-1">
-                            {user?.username}
+                            {mounted ? user?.username : ""}
                         </span>
                     </Button>
                 </DropdownMenuTrigger>
@@ -111,7 +125,7 @@ export default function UserActions() {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => dispatch(toggleDarkMode())} className="md:hidden">
-                        {darkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
+                        {mounted ? (darkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />) : <div className="mr-2 h-4 w-4" />}
                         Appearance
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:bg-destructive/10 focus:text-destructive">

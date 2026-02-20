@@ -9,6 +9,7 @@ interface SearchBarProps {
     onChange: (value: string) => void;
     placeholder?: string;
     className?: string;
+    autoFocus?: boolean;
 }
 
 export default function SearchBar({
@@ -16,6 +17,7 @@ export default function SearchBar({
     onChange,
     placeholder = "Search products...",
     className,
+    autoFocus,
 }: SearchBarProps) {
     // Local state for immediate input feedback
     const [localValue, setLocalValue] = useState(value);
@@ -83,6 +85,7 @@ export default function SearchBar({
                 value={localValue}
                 onChange={handleChange}
                 placeholder={placeholder}
+                autoFocus={autoFocus}
                 className="pl-9 pr-9 h-10"
                 aria-label="Search products"
                 suppressHydrationWarning={true}

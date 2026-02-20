@@ -9,20 +9,24 @@ export interface CartItem extends Product {
 interface CartState {
     items: CartItem[];
     isOpen: boolean;
+    totalAmount: number;
 }
 
 const getInitialState = (): CartState => {
-    if (typeof window === "undefined") return { items: [], isOpen: false };
+    if (typeof window === "undefined") return { items: [], isOpen: false, totalAmount: 0 };
 
     try {
         const savedCart = localStorage.getItem("shophub_cart");
+        const items = savedCart ? JSON.parse(savedCart) : [];
+        const totalAmount = items.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
         return {
-            items: savedCart ? JSON.parse(savedCart) : [],
+            items,
             isOpen: false,
+            totalAmount,
         };
     } catch (error) {
         console.error("Failed to load cart from localStorage:", error);
-        return { items: [], isOpen: false };
+        return { items: [], isOpen: false, totalAmount: 0 };
     }
 };
 
@@ -76,6 +80,14 @@ const cartSlice = createSlice({
         setCartOpen: (state, action: PayloadAction<boolean>) => {
             state.isOpen = action.payload;
         },
+    },
+    extraReducers: (builder) => {
+        builder.addMatcher(
+            (action) => action.type.startsWith("cart/"),
+            (state) => {
+                state.totalAmount = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            }
+        );
     },
 });
 

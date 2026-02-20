@@ -32,33 +32,33 @@ export default function FlashSale({ products }: FlashSaleProps) {
 
     return (
         <section id="flash-sale" className="mb-24 scroll-mt-28">
-            <div className="flex items-center justify-between mb-10">
-                <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-3">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-foreground text-background shadow-xl">
-                            <Timer className="h-6 w-6" />
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
+                <div className="flex items-center gap-3 sm:gap-6">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-foreground text-background shadow-xl shrink-0">
+                            <Timer className="h-5 w-5 sm:h-6 sm:w-6" />
                         </div>
-                        <h2 className="text-2xl font-black tracking-tight uppercase italic">Flash Sale</h2>
+                        <h2 className="text-xl sm:text-2xl font-black tracking-tight uppercase italic shrink-0">Flash Sale</h2>
                     </div>
 
                     <div className="h-10 w-px bg-border hidden sm:block" />
 
-                    <div className="flex items-center gap-2 font-mono font-black text-xl ml-2">
-                        <span className="bg-destructive text-destructive-foreground px-3 py-1.5 rounded-xl tabular-nums shadow-lg shadow-destructive/10">{timeLeft.h.toString().padStart(2, '0')}</span>
+                    <div className="flex items-center gap-1.5 sm:gap-2 font-mono font-black text-base sm:text-xl ml-1 sm:ml-2 shrink-0">
+                        <span className="bg-destructive text-destructive-foreground px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl tabular-nums shadow-lg shadow-destructive/10">{timeLeft.h.toString().padStart(2, '0')}</span>
                         <span className="text-destructive animate-pulse">:</span>
-                        <span className="bg-destructive text-destructive-foreground px-3 py-1.5 rounded-xl tabular-nums shadow-lg shadow-destructive/10">{timeLeft.m.toString().padStart(2, '0')}</span>
+                        <span className="bg-destructive text-destructive-foreground px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl tabular-nums shadow-lg shadow-destructive/10">{timeLeft.m.toString().padStart(2, '0')}</span>
                         <span className="text-destructive animate-pulse">:</span>
-                        <span className="bg-destructive text-destructive-foreground px-3 py-1.5 rounded-xl tabular-nums shadow-lg shadow-destructive/10">{timeLeft.s.toString().padStart(2, '0')}</span>
+                        <span className="bg-destructive text-destructive-foreground px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl tabular-nums shadow-lg shadow-destructive/10">{timeLeft.s.toString().padStart(2, '0')}</span>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <div className="flex gap-2 mr-2">
+                <div className="flex items-center gap-2 sm:gap-4">
+                    <div className="hidden sm:flex gap-2 mr-2">
                         <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl bg-card border-border hover:bg-muted transition-all shadow-sm"><ChevronLeft className="h-5 w-5" /></Button>
                         <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl bg-foreground text-background border-none hover:opacity-90 transition-all shadow-md"><ChevronRight className="h-5 w-5" /></Button>
                     </div>
-                    <Button variant="ghost" className="text-[11px] font-black tracking-[0.2em] italic hover:bg-primary/5 uppercase pb-0">
-                        SEE ALL <ArrowRight className="h-4 w-4 ml-2" />
+                    <Button variant="ghost" className="text-[10px] sm:text-[11px] font-black tracking-[0.1em] sm:tracking-[0.2em] italic hover:bg-primary/5 uppercase pb-0 shrink-0">
+                        SEE ALL <ArrowRight className="h-4 w-4 ml-1.5 sm:ml-2" />
                     </Button>
                 </div>
             </div>

@@ -15,9 +15,16 @@ export default function BackToTop() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
+
+    if (!mounted) return null;
 
     return (
         <AnimatePresence>
