@@ -43,9 +43,13 @@ export default function RootLayout({
           <Suspense fallback={<div className="h-16 border-b bg-background/95 backdrop-blur py-1 flex items-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" />}>
             <Header />
           </Suspense>
-          <ScrollToTop />
+          <Suspense fallback={null}>
+            <ScrollToTop />
+          </Suspense>
           <ScrollRestoration />
-          <main className="min-h-[calc(100vh-4rem)]">{children}</main>
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" /></div>}>
+            <main className="min-h-[calc(100vh-4rem)]">{children}</main>
+          </Suspense>
           <Footer />
         </Providers>
       </body>
